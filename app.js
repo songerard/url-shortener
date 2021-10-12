@@ -2,6 +2,20 @@
 const express = require('express')
 const app = express()
 
+// require mongoose
+const mongoose = require('mongoose')
+const db_URI = 'mongodb://localhost/URL-shortener'
+mongoose.connect(db_URI)
+const db = mongoose.connection
+
+db.on('open', () => {
+  console.log('Mongodb connected!')
+})
+db.once('error', () => {
+  console.log('Mongodb error!')
+})
+
+
 // require handlebars
 const exphbs = require('express-handlebars')
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
