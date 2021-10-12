@@ -2,6 +2,10 @@
 const express = require('express')
 const app = express()
 
+// require body-parser
+const bodyParser = require('body-parser')
+app.use(express.urlencoded({ extended: true }))
+
 // require mongoose
 const mongoose = require('mongoose')
 const db_URI = 'mongodb://localhost/URL-shortener'
@@ -15,6 +19,8 @@ db.once('error', () => {
   console.log('Mongodb error!')
 })
 
+// require shortenUrl model
+const ShortenUrl = require('./models/shortenUrl')
 
 // require handlebars
 const exphbs = require('express-handlebars')
@@ -36,4 +42,18 @@ app.listen(port, () => {
 // index page
 app.get('/', (req, res) => {
   res.render('index')
+})
+
+// shorten page
+app.post('/shorten', (req, res) => {
+  const originalUrl = req.body.URLinput
+  ShortenUrl.find(
+    { 'originalUrl': { "$regex": originalUrl, "$options": "i" } }
+  )
+    .lean()
+    .then(result => {
+      const url = result[0]
+      res.render('shorten', { url })
+    })
+    .catch(error => console.error(error))
 })
