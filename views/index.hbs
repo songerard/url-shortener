@@ -1,9 +1,18 @@
 <form action="/shorten" method="POST">
-  <div>
-    <input type="text" class="form-control" id="URLinput" name="URLinput" placeholder="Input URL here"
-      style="background-color: #F5F5F5">
+  <div class="row">
+    <div class="col-10">
+      <input type="text" class="form-control {{#if isInvalid}}is-invalid{{/if}}" id="URLinput" name="URLinput"
+        placeholder="Input URL here" style="background-color: #F5F5F5" value="{{ urlInQuery }}"
+        aria-describedby="validationFeedback" required>
+      <div id="validationFeedback" class="invalid-feedback">
+        Please provide a valid URL.
+      </div>
+    </div>
+    <div class="col-2">
+      <a href="{{ urlDomin }}" class="btn btn-secondary">Clear</a>
+    </div>
   </div>
   <div class="mt-4">
-    <button type="submit" class="btn btn-outline-primary d-block mx-auto w-50">Shorten</button>
+    <button type="submit" class="btn btn-outline-primary d-block mx-auto w-25">Shorten</button>
   </div>
 </form>

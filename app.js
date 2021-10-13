@@ -30,6 +30,9 @@ app.set('view engine', 'hbs')
 // use static files
 app.use(express.static('public'))
 
+// require url-exists-deep
+const urlExistsDeep = require('url-exists-deep')
+
 // set port
 const port = 3000
 
@@ -41,13 +44,25 @@ app.listen(port, () => {
 // ******** set route ******** //
 // index page
 app.get('/', (req, res) => {
-  res.render('index')
+  const urlInQuery = req.query.url
+  const isInvalid = (!urlInQuery) ? false : true
+  const urlDomin = `http://localhost:${port}/`
+  res.render('index', { urlInQuery, isInvalid, urlDomin })
 })
 
 // shorten page
 app.post('/shorten', (req, res) => {
   // get user input URL
   const originalUrl = req.body.URLinput
+
+  // check if url exist
+  urlExistsDeep(originalUrl)
+    .then(respond => {
+      if (!respond) {
+        console.log('URL doesn\'t exist')
+        res.redirect('/?url=' + originalUrl)
+      }
+    })
 
   // set shorten URL domin
   const urlDomin = `http://localhost:${port}/`
@@ -86,8 +101,10 @@ app.get('/:shortenCode', (req, res) => {
   )
     .lean()
     .then(result => {
-      const { originalUrl, shortenCode } = result[0]
-      res.redirect(originalUrl)
+      if (result.length) {
+        const { originalUrl, shortenCode } = result[0]
+        res.redirect(originalUrl)
+      }
     })
     .catch(error => console.error(error))
 })
