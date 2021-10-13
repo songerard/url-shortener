@@ -16,7 +16,7 @@ db.once('error', () => {
 // create seeds
 const seed = {
   originalUrl: 'http://www.google.com',
-  shortenedUrl: 'http://abc'
+  shortenCode: 'abcde'
 }
 
 db.once('open', () => {

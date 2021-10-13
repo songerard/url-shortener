@@ -5,7 +5,8 @@
     </p>
   </div>
   <div class="mt-3">
-    <a href="{{ result.originalUrl }}" class="text-primary h2" id="url">{{ result.shortenedUrl }}</a>
+    <a href="{{ urlDomin }}{{ result.shortenCode }}" class="text-primary h2" id="url" target="_blank">{{ urlDomin }}{{
+      result.shortenCode }}</a>
   </div>
   <div class="mt-3 text-center">
     <button class="btn btn-primary w-25" id="copy-btn" onclick="copyToClipboard()">Copy</button>

@@ -50,33 +50,44 @@ app.post('/shorten', (req, res) => {
   const originalUrl = req.body.URLinput
 
   // set shorten URL domin
-  const urlDomin = 'http://heroku.com/'
+  const urlDomin = `http://localhost:${port}/`
 
-  // generate random shorten part
+  // generate random shortenCode
   let shortenedUrl = ''
   const lowerCase = 'abcdefghijklmnopqrstuvwxyz'
   const upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   const num = '1234567890'
   const codeSet = lowerCase + upperCase + num
   const maxLength = 5
-  let shortenPart = ''
+  let shortenCode = ''
   let randomNum = 0
   for (let i = 1; i <= maxLength; i++) {
     randomNum = Math.floor(Math.random() * codeSet.length)
-    shortenPart = shortenPart + codeSet[randomNum]
+    shortenCode = shortenCode + codeSet[randomNum]
   }
-
-  // combine shorten domain and shorten part
-  shortenedUrl = urlDomin + shortenPart
 
   // find or insert in mongodb
   const query = { originalUrl }
-  const insert = { originalUrl, shortenedUrl }
+  const insert = { originalUrl, shortenCode }
   const options = { upsert: true, new: true }
   ShortenUrl.findOneAndUpdate(
     query, { $setOnInsert: insert }, options
   )
     .lean()
-    .then(result => res.render('shorten', { result }))
+    .then(result => res.render('shorten', { result, urlDomin }))
+    .catch(error => console.error(error))
+})
+
+// redirect shortened url request
+app.get('/:shortenCode', (req, res) => {
+  const shortenCode = req.params.shortenCode
+  ShortenUrl.find(
+    { 'shortenCode': { "$regex": shortenCode } }
+  )
+    .lean()
+    .then(result => {
+      const { originalUrl, shortenCode } = result[0]
+      res.redirect(originalUrl)
+    })
     .catch(error => console.error(error))
 })
