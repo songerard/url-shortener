@@ -1,1 +1,26 @@
-<h2>{{ result.shortenedUrl }}</h2>
+<div>
+  <div class="mt-3">
+    <p class="h1">
+      Success! Please use this link:
+    </p>
+  </div>
+  <div class="mt-3">
+    <a href="{{ result.originalUrl }}" class="text-primary h2" id="url">{{ result.shortenedUrl }}</a>
+  </div>
+  <div class="mt-3 text-center">
+    <button class="btn btn-primary w-25" id="copy-btn" onclick="copyToClipboard()">Copy</button>
+  </div>
+</div>
+
+<script>
+  function copyToClipboard() {
+    /* Get the text field */
+    let copyText = document.getElementById("url").innerText
+
+    /* Copy the text inside the text field */
+    navigator.clipboard.writeText(copyText)
+
+    /* Alert the copied text */
+    alert("Copied: " + copyText)
+  }
+</script>
