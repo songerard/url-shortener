@@ -23,7 +23,8 @@
 <script>
   function copyToClipboard() {
     // get the url
-    let copyText = $('#url').innerText
+    const url = document.querySelector('#url')
+    const copyText = url.innerText
 
     // copy to clipboard
     navigator.clipboard.writeText(copyText)
