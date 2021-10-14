@@ -5,23 +5,60 @@
     </p>
   </div>
   <div class="mt-3">
-    <a href="{{ urlDomin }}{{ result.shortenCode }}" class="text-primary h2" id="url" target="_blank">{{ urlDomin }}{{
-      result.shortenCode }}</a>
+    <a class="h2" id="url" role="button" data-toggle="tooltip" data-trigger="manual" data-placement="right"
+      onclick="copyToClipboard()">
+      {{ urlDomin }}{{ result.shortenCode }}
+    </a>
   </div>
-  <div class="mt-3 text-center">
-    <button class="btn btn-primary w-25" id="copy-btn" onclick="copyToClipboard()">Copy</button>
+  <div class="row justify-content-center">
+    <div class="mt-3 mx-3">
+      <button class="btn btn-primary" id="copy-btn" onclick="copyToClipboard()">Copy</button>
+    </div>
+    <div class="mt-3 mx-3">
+      <a href="/" class="btn btn-secondary">Shorten another URL</a>
+    </div>
   </div>
 </div>
 
 <script>
   function copyToClipboard() {
-    /* Get the text field */
-    let copyText = document.getElementById("url").innerText
+    // get the url
+    let copyText = $('#url').innerText
 
-    /* Copy the text inside the text field */
+    // copy to clipboard
     navigator.clipboard.writeText(copyText)
 
-    /* Alert the copied text */
-    alert("Copied: " + copyText)
+    // Show tooltip 'Copied'
+    let that = $('#url')
+    that.attr('data-original-title', 'Copied')
+      .tooltip('show')
+    setTimeout(function () {
+      that.tooltip('hide')
+    }, 2000)
   }
+
+  $(function bsTooltip() {
+    // on click
+    $('#url').click(function () {
+      let that = $(this)
+      that.tooltip('hide')
+        .attr('data-original-title', 'Copied')
+        .tooltip('show')
+      setTimeout(function () {
+        that.tooltip('hide')
+      }, 2000)
+    })
+
+    // on mouse enter
+    $('#url').mouseenter(function () {
+      $(this).tooltip('hide')
+        .attr('data-original-title', 'Click to copy')
+        .tooltip('show')
+    })
+
+    // on mouse leave
+    $('#url').mouseleave(function () {
+      $(this).tooltip('hide')
+    })
+  })
 </script>
