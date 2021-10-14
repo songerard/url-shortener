@@ -104,6 +104,8 @@ app.get('/:shortenCode', (req, res) => {
       if (result.length) {
         const { originalUrl, shortenCode } = result[0]
         res.redirect(originalUrl)
+      } else {
+        res.render('error', { shortenCode })
       }
     })
     .catch(error => console.error(error))
