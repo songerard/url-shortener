@@ -1,4 +1,4 @@
-# restaurant-phase3
+# URL shortener
 A simple web application for url shortening using express.js and MongoDB.
 
 ## Features
