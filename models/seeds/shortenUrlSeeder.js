@@ -5,7 +5,7 @@ const ShortenUrl = require('../shortenUrl')
 const mongoose = require('mongoose')
 
 // mongodb connection
-const db_URI = 'mongodb://localhost/URL-shortener'
+const db_URI = 'mongodb://localhost/url-shortener'
 mongoose.connect(db_URI)
 const db = mongoose.connection
 
